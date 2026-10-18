@@ -1,0 +1,11 @@
+# M3 pad: a chord held long enough to hear the attack, decay and release, then MIDI on channel 1
+200 keys 0x4880
+4200 keys 0
+9000 midi 0x90 48 110
+9000 midi 0x90 55 90
+9000 midi 0x90 63 70
+9100 midi 0x91 72 127
+12000 midi 0x80 48 0
+12000 midi 0x80 55 0
+12000 midi 0x80 63 0
+17500 end

@@ -1,0 +1,13 @@
+# M3 patches: MIST, GLASS, HALO, KEYS in turn (PRESETS is encoder 6), a chord held 3.5 s each
+300 keys 0x4880
+3800 keys 0
+7600 enc 6 1
+7800 keys 0x4880
+11300 keys 0
+15100 enc 6 1
+15300 keys 0x4880
+18800 keys 0
+22600 enc 6 1
+22800 keys 0x4880
+26300 keys 0
+30000 end

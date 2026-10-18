@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 84" width="240" height="84" role="img" aria-label="Ethereal">
+  <defs>
+    <linearGradient id="night" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#04040f"/>
+      <stop offset="1" stop-color="#1e0e34"/>
+    </linearGradient>
+    <linearGradient id="lilac" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#b48cff" stop-opacity="0"/>
+      <stop offset="1" stop-color="#b48cff" stop-opacity="0.55"/>
+    </linearGradient>
+    <linearGradient id="teal" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6ee1d7" stop-opacity="0"/>
+      <stop offset="1" stop-color="#6ee1d7" stop-opacity="0.45"/>
+    </linearGradient>
+    <linearGradient id="pink" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f0aae6" stop-opacity="0"/>
+      <stop offset="1" stop-color="#f0aae6" stop-opacity="0.35"/>
+    </linearGradient>
+    <radialGradient id="glow">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.3" stop-color="#ebdeff" stop-opacity="0.7"/>
+      <stop offset="1" stop-color="#b48cff" stop-opacity="0"/>
+    </radialGradient>
+    <clipPath id="card"><rect width="240" height="84" rx="8"/></clipPath>
+  </defs>
+  <g clip-path="url(#card)">
+    <rect width="240" height="84" fill="url(#night)"/>
+    <g fill="#ebdeff">
+      <circle cx="14" cy="10" r="0.7"/><circle cx="38" cy="22" r="0.5"/><circle cx="61" cy="8" r="0.8"/>
+      <circle cx="96" cy="14" r="0.5"/><circle cx="131" cy="6" r="0.6"/><circle cx="158" cy="18" r="0.5"/>
+      <circle cx="187" cy="9" r="0.8"/><circle cx="214" cy="20" r="0.5"/><circle cx="229" cy="7" r="0.6"/>
+      <circle cx="24" cy="34" r="0.5"/><circle cx="222" cy="36" r="0.5"/><circle cx="108" cy="27" r="0.4"/>
+    </g>
+    <path d="M0 70 C30 58 52 76 84 66 S140 52 170 64 S220 74 240 60 L240 34 C210 46 190 30 160 40 S100 50 70 40 S20 36 0 46 Z" fill="url(#lilac)"/>
+    <path d="M0 78 C24 70 60 84 96 74 S150 64 184 74 S226 80 240 70 L240 50 C214 60 190 50 160 56 S110 64 80 56 S24 52 0 60 Z" fill="url(#teal)"/>
+    <path d="M0 62 C40 52 70 66 110 56 S180 46 240 54 L240 38 C190 32 150 44 110 40 S40 36 0 44 Z" fill="url(#pink)"/>
+    <path d="M0 70 C30 58 52 76 84 66 S140 52 170 64 S220 74 240 60" fill="none" stroke="#e4d6ff" stroke-opacity="0.7" stroke-width="0.8"/>
+    <path d="M0 78 C24 70 60 84 96 74 S150 64 184 74 S226 80 240 70" fill="none" stroke="#6ee1d7" stroke-opacity="0.7" stroke-width="0.8"/>
+    <g stroke="#7864be" stroke-width="0.6" fill="none">
+      <path d="M170 12 L186 20 L201 13 L214 24 L170 12"/>
+    </g>
+    <circle cx="170" cy="12" r="3" fill="url(#glow)"/><circle cx="186" cy="20" r="3.4" fill="url(#glow)"/>
+    <circle cx="201" cy="13" r="2.6" fill="url(#glow)"/><circle cx="214" cy="24" r="3" fill="url(#glow)"/>
+    <text x="120" y="49" text-anchor="middle" font-family="Futura, Avenir Next, Century Gothic, Helvetica, sans-serif"
+          font-size="27" font-weight="300" letter-spacing="7" fill="#b48cff" opacity="0.45" filter="none">ETHEREAL</text>
+    <text x="120" y="48" text-anchor="middle" font-family="Futura, Avenir Next, Century Gothic, Helvetica, sans-serif"
+          font-size="27" font-weight="300" letter-spacing="7" fill="#f2ecff">ETHEREAL</text>
+  </g>
+</svg>
