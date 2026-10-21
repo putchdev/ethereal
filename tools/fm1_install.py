@@ -13,8 +13,7 @@ the FM-1 restarts and the installed identity is checked.
   fm1_install.py --info [--port NAME]
 
 If the FM-1 is still in update mode (an earlier install was cut off), the
-install finishes the write. Needs mido with python-rtmidi, except on Linux
-without the ALSA sequencer (WSL), where it uses /dev/snd/midi* directly.
+install finishes the write. Needs mido with python-rtmidi.
 
 Exit codes: 0 done, 1 cancelled or other error, 2 bad arguments or package,
 3 FM-1 not found, 4 connection lost or the device stopped, 5 timeout (no
@@ -23,11 +22,8 @@ FM-1 is in the update mode of another firmware (only SLOOP's own loader,
 ota-FM-1_9XX, is resumed).
 """
 import argparse
-import glob
-import os
 import queue
 import re
-import select
 import sys
 import time
 
@@ -204,99 +200,6 @@ class MidoBackend:
 
     def open(self, in_name, out_name):
         return MidoLink(self, in_name, out_name)
-
-
-class RawLink:
-    """one ALSA raw MIDI device (/dev/snd/midiCxDy), SysEx framed by hand"""
-
-    def __init__(self, backend, name):
-        self.backend, self.name = backend, name
-        self.fd = os.open(backend.paths[name], os.O_RDWR)
-        self.buf, self.q = bytearray(), queue.SimpleQueue()
-
-    @property
-    def lost(self):
-        return self.name not in self.backend.input_names()
-
-    def send(self, pkt):
-        try:
-            os.write(self.fd, pkt)
-            return True
-        except OSError:
-            return False
-
-    def _take(self, data):
-        for b in data:
-            if b >= 0xF8:               # realtime bytes may sit inside a SysEx
-                continue
-            if b == 0xF0:
-                self.buf = bytearray([b])
-            elif self.buf:
-                self.buf.append(b)
-                if b == 0xF7:
-                    self.q.put(bytes(self.buf))
-                    self.buf = bytearray()
-                elif b & 0x80:
-                    self.buf = bytearray()
-
-    def _pump(self, timeout):
-        if select.select([self.fd], [], [], max(timeout, 0))[0]:
-            try:
-                data = os.read(self.fd, 4096)
-            except OSError:
-                return False
-            self._take(data)
-            return bool(data)
-        return False
-
-    def read(self, timeout):
-        end = time.monotonic() + timeout
-        while self.q.empty():
-            left = end - time.monotonic()
-            if left <= 0:
-                break
-            self._pump(left)
-        return None if self.q.empty() else self.q.get()
-
-    def drain(self):
-        while self._pump(0):
-            pass
-        while not self.q.empty():
-            self.q.get()
-
-    def close(self):
-        try:
-            os.close(self.fd)
-        except OSError:
-            pass
-
-
-class RawBackend:
-    """for Linux without the ALSA sequencer (WSL's kernel), where python-rtmidi finds no ports"""
-
-    @property
-    def paths(self):
-        found = {}
-        for dev in sorted(glob.glob("/dev/snd/midiC*D*")):
-            card, num = re.search(r"midiC(\d+)D(\d+)$", dev).groups()
-            cid = "card" + card         # the USB product, as rtmidi names it: ALSA's card id is only "Update" in the loader
-            for f in (f"/sys/class/sound/card{card}/device/../product", f"/sys/class/sound/card{card}/id"):
-                try:
-                    with open(f) as fh:
-                        cid = fh.read().strip()
-                    break
-                except OSError:
-                    pass
-            found[f"{cid} hw:{card},{num}"] = dev
-        return found
-
-    def input_names(self):
-        return list(self.paths)
-
-    output_names = input_names
-
-    def open(self, in_name, out_name):
-        return RawLink(self, in_name)
 
 
 def pair_output(name, outs):
@@ -607,8 +510,6 @@ def main(argv=None, backend=None, out=sys.stdout, ask=ask_tty):
     if bool(a.info) == bool(a.package):
         ap.error("give a PACKAGE.fwsc or --info")
     try:
-        if backend is None and sys.platform == "linux" and not os.path.exists("/dev/snd/seq"):
-            backend = RawBackend()
         if backend is None:
             try:
                 backend = MidoBackend()
